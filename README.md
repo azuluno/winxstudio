@@ -11,6 +11,7 @@ WinX Studio is a browser-based visual builder for Home Assistant-powered Rainmet
 - Per-widget colors, typography, opacity, radius, and sizing
 - Import/export editable `.winx.json` projects
 - Validation and Rainmeter `.ini` source export
+- Rainmeter skin-folder ZIP packaging helper
 - Light and dark themes
 - GitHub Pages deployment
 
@@ -25,6 +26,19 @@ py -m http.server 8080
 Then open `http://localhost:8080`.
 
 A local server is recommended for Home Assistant API access because browser requests from `file://` pages can be blocked by CORS policy.
+
+## Package a Rainmeter skin
+
+Use **Package helper** in the editor to download a ZIP containing the generated skin folder, `Variables.inc`, `Measures.inc`, `Actions.inc`, and a setup README. This is intentionally a ZIP bundle rather than a renamed `.rmskin`: Rainmeter validates `.rmskin` metadata and requires packages to be created with its official Skin Packager.
+
+To finish the package:
+
+1. Open Rainmeter Manage.
+2. Choose **Create .rmskin package...**.
+3. Add the extracted `Living room climate` folder as the root config folder.
+4. Create and install the `.rmskin` package.
+
+Keep `HAToken` set only on the target computer. Do not distribute tokens in a skin package.
 
 ## Home Assistant setup
 
