@@ -1,0 +1,2649 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WinX Studio | Rainmeter widget builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #12202a;
+        --muted: #74818a;
+        --paper: #f6f7f5;
+        --panel: #ffffff;
+        --line: #dfe5e6;
+        --teal: #18a795;
+        --teal-dark: #08786d;
+        --mint: #dcf5ed;
+        --coral: #ef785f;
+        --yellow: #f5c95d;
+        --shadow: 0 16px 45px rgba(23, 52, 57, 0.08);
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+      body.dark {
+        --ink: #e9f1ef;
+        --muted: #92a6a7;
+        --paper: #0d191d;
+        --panel: #14262b;
+        --line: #2b4144;
+        --mint: #173f3d;
+        --shadow: 0 16px 45px rgba(0, 0, 0, 0.24);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        min-width: 1080px;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      .app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 238px 1fr;
+      }
+      .sidebar {
+        background: #10252b;
+        color: #dce9e8;
+        padding: 23px 16px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 27px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 0 8px;
+      }
+      .brand-mark {
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+        background: var(--teal);
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-weight: 800;
+        box-shadow: 0 0 0 5px rgba(24, 167, 149, 0.14);
+      }
+      .brand strong {
+        color: white;
+        font-size: 16px;
+        letter-spacing: -0.3px;
+      }
+      .brand small {
+        display: block;
+        color: #82a29e;
+        font-size: 10px;
+        margin-top: 2px;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+      }
+      .side-label {
+        margin: 0 10px 8px;
+        color: #61817e;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+      }
+      .nav {
+        display: grid;
+        gap: 5px;
+      }
+      .nav button {
+        border: 0;
+        background: transparent;
+        color: #9eb4b2;
+        border-radius: 8px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 11px 12px;
+        text-align: left;
+        width: 100%;
+        font-size: 13px;
+      }
+      .nav button:hover,
+      .nav button.active {
+        background: #18363b;
+        color: white;
+      }
+      .nav button.active {
+        box-shadow: inset 3px 0 var(--teal);
+      }
+      .icon {
+        width: 17px;
+        text-align: center;
+        color: #86aaa5;
+        font-size: 16px;
+      }
+      .nav .active .icon {
+        color: #56dfc4;
+      }
+      .sidebar-bottom {
+        margin-top: auto;
+        background: #17353a;
+        padding: 14px;
+        border-radius: 11px;
+      }
+      .status-line {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 99px;
+        background: var(--teal);
+        box-shadow: 0 0 0 4px rgba(24, 167, 149, 0.14);
+      }
+      .status-sub {
+        color: #8aa6a2;
+        font-size: 11px;
+        margin: 8px 0 0 16px;
+        line-height: 1.4;
+      }
+      .main {
+        min-width: 0;
+        display: grid;
+        grid-template-rows: 68px 1fr;
+      }
+      .topbar {
+        background: var(--panel);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 27px;
+      }
+      body.dark .topbar,
+      body.dark .panel,
+      body.dark .editor-mode button,
+      body.dark .field input,
+      body.dark .field select,
+      body.dark .field textarea,
+      body.dark .asset {
+        background: var(--panel);
+        color: var(--ink);
+      }
+      body.dark .canvas {
+        background-color: #1d3031;
+        background-image:
+          linear-gradient(#294445 1px, transparent 1px),
+          linear-gradient(90deg, #294445 1px, transparent 1px);
+      }
+      body.dark .widget-arc .arc-inner {
+        background: #213638;
+      }
+      .theme-toggle {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--ink);
+        padding: 8px 11px;
+        border-radius: 7px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .live-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 800;
+      }
+      .live-pill .dot {
+        width: 7px;
+        height: 7px;
+      }
+      .breadcrumbs {
+        display: flex;
+        gap: 11px;
+        align-items: center;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .breadcrumbs strong {
+        color: var(--ink);
+      }
+      .crumb-arrow {
+        color: #b1babb;
+      }
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .top-actions button,
+      .secondary {
+        border: 1px solid var(--line);
+        background: #fff;
+        color: #40535a;
+        padding: 8px 12px;
+        border-radius: 7px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .top-actions button:hover,
+      .secondary:hover {
+        border-color: #9ccdc4;
+        color: var(--teal-dark);
+      }
+      .validate {
+        border: 0;
+        background: var(--mint);
+        color: var(--teal-dark);
+        padding: 9px 14px;
+        border-radius: 7px;
+        font-weight: 800;
+        font-size: 12px;
+      }
+      .build {
+        border: 0;
+        background: var(--teal);
+        color: white;
+        padding: 9px 15px;
+        border-radius: 7px;
+        font-weight: 800;
+        font-size: 12px;
+        box-shadow: 0 4px 10px rgba(24, 167, 149, 0.2);
+      }
+      .build:disabled {
+        background: #cbd5d5;
+        box-shadow: none;
+        cursor: not-allowed;
+      }
+      .workspace {
+        padding: 25px 27px;
+        overflow: auto;
+        min-height: calc(100vh - 68px);
+      }
+      .page-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 22px;
+      }
+      h1 {
+        font-size: 24px;
+        letter-spacing: -0.8px;
+        margin: 0 0 6px;
+      }
+      .subtitle {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .project-meta {
+        color: var(--muted);
+        text-align: right;
+        font-size: 11px;
+        line-height: 1.7;
+      }
+      .project-meta strong {
+        color: var(--ink);
+        font-size: 12px;
+      }
+      .editor-grid {
+        display: grid;
+        grid-template-columns: 265px minmax(0, 1fr) 292px;
+        gap: 16px;
+        align-items: start;
+        min-width: 0;
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+      }
+      .panel-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 16px 12px;
+        border-bottom: 1px solid #edf0f0;
+      }
+      .panel-heading h2 {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 0;
+      }
+      .panel-heading span {
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .asset-tabs {
+        display: flex;
+        gap: 5px;
+        padding: 12px 12px 5px;
+      }
+      .asset-tabs button {
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        font-size: 11px;
+        padding: 5px 7px;
+        border-radius: 5px;
+      }
+      .asset-tabs button.active {
+        background: var(--mint);
+        color: var(--teal-dark);
+        font-weight: 800;
+      }
+      .asset-list {
+        padding: 7px 11px 15px;
+        display: grid;
+        gap: 7px;
+      }
+      .custom-assets {
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
+        margin-top: 2px;
+      }
+      .custom-assets-title {
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin: 0 11px 7px;
+      }
+      .asset {
+        border: 1px solid #e9eeee;
+        border-radius: 8px;
+        background: #fbfcfb;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        cursor: grab;
+        transition: 0.15s ease;
+      }
+      .asset:hover {
+        transform: translateY(-1px);
+        border-color: #9dd8cb;
+        box-shadow: 0 5px 13px rgba(31, 100, 96, 0.08);
+      }
+      .asset strong {
+        display: block;
+        font-size: 12px;
+      }
+      .asset small {
+        color: var(--muted);
+        font-size: 10px;
+        display: block;
+        margin-top: 3px;
+      }
+      .asset-preview {
+        width: 44px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        background: #e9f6f2;
+        border-radius: 6px;
+        color: var(--teal-dark);
+        font-size: 16px;
+      }
+      .preview-switch {
+        width: 29px;
+        height: 15px;
+        background: var(--teal);
+        border-radius: 99px;
+        position: relative;
+      }
+      .preview-switch:after {
+        content: "";
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        background: #fff;
+      }
+      .preview-slider {
+        width: 28px;
+        height: 4px;
+        background: #a8ddd3;
+        border-radius: 5px;
+        position: relative;
+      }
+      .preview-slider:after {
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--teal);
+        top: -3px;
+        left: 12px;
+      }
+      .preview-tile {
+        width: 28px;
+        height: 25px;
+        border: 2px solid var(--teal);
+        border-radius: 4px;
+        font-size: 9px;
+      }
+      .canvas-wrap {
+        padding: 12px;
+        min-width: 0;
+        overflow: hidden;
+      }
+      .canvas-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2px 4px 12px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .canvas-size {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .canvas-size select {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--ink);
+        border-radius: 5px;
+        padding: 5px 7px;
+        font-size: 11px;
+      }
+      .canvas-toolbar button {
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .canvas {
+        height: max(460px, calc(100vh - 250px));
+        min-height: 460px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 6px;
+        border: 1px solid #cfdbdb;
+        background-color: #ecf1ef;
+        background-image:
+          linear-gradient(#dce6e4 1px, transparent 1px),
+          linear-gradient(90deg, #dce6e4 1px, transparent 1px);
+        background-size: 20px 20px;
+        width: 100%;
+        max-width: 100%;
+      }
+      .canvas.screen-fit {
+        height: max(460px, calc(100vh - 250px));
+      }
+      .canvas:before {
+        content: "WIDGET CANVAS  •  320 × 520";
+        position: absolute;
+        top: 14px;
+        left: 16px;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: #9aabaa;
+      }
+      .canvas-empty {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: #8a9c9c;
+        font-size: 12px;
+        pointer-events: none;
+      }
+      .canvas-empty span {
+        display: block;
+        text-align: center;
+        line-height: 1.7;
+      }
+      .canvas-empty b {
+        color: #536b6d;
+      }
+      .widget {
+        position: absolute;
+        min-width: 90px;
+        min-height: 38px;
+        border: 2px solid var(--teal);
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 9px;
+        padding: 9px 12px;
+        color: var(--ink);
+        cursor: move;
+        user-select: none;
+        box-shadow: 0 5px 14px rgba(31, 77, 75, 0.1);
+      }
+      .widget.selected {
+        outline: 2px solid var(--coral);
+        outline-offset: 3px;
+      }
+      .resize-handle {
+        position: absolute;
+        right: -1px;
+        bottom: -1px;
+        width: 12px;
+        height: 12px;
+        border-right: 3px solid var(--coral);
+        border-bottom: 3px solid var(--coral);
+        cursor: nwse-resize;
+      }
+      .connection-result {
+        min-height: 18px;
+        margin: -3px 0 8px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .connection-result.ok {
+        color: var(--teal-dark);
+      }
+      .connection-result.failed {
+        color: #c14f43;
+      }
+      .widget-title {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        color: var(--muted);
+        font-weight: 800;
+      }
+      .widget-value {
+        font-size: 20px;
+        font-weight: 800;
+        margin-top: 4px;
+      }
+      .widget-icon {
+        display: inline-grid;
+        place-items: center;
+        margin-right: 6px;
+        font-size: 17px;
+        vertical-align: middle;
+        font-family: "Material Symbols Outlined";
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1;
+      }
+      .icon-field {
+        display: none;
+      }
+      .icon-field.visible {
+        display: block;
+      }
+      .asset.is-hidden {
+        display: none;
+      }
+      .widget-button {
+        border-radius: 7px;
+        color: white;
+        background: var(--teal);
+        border-color: var(--teal);
+        font-weight: 800;
+        text-align: center;
+      }
+      .widget-button .widget-title {
+        color: rgba(255, 255, 255, 0.75);
+      }
+      .widget-switch {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .switch-track {
+        width: 34px;
+        height: 19px;
+        background: #bdc8c8;
+        border-radius: 20px;
+        position: relative;
+      }
+      .switch-track:after {
+        content: "";
+        width: 15px;
+        height: 15px;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        border-radius: 50%;
+        background: white;
+        transition: 0.15s;
+      }
+      .widget-switch.on .switch-track {
+        background: var(--teal);
+      }
+      .widget-switch.on .switch-track:after {
+        left: 17px;
+      }
+      .widget-slider {
+        min-width: 152px;
+      }
+      .slider-line {
+        height: 5px;
+        background: #b5dcd5;
+        border-radius: 5px;
+        margin-top: 11px;
+        position: relative;
+      }
+      .slider-line:after {
+        content: "";
+        position: absolute;
+        left: 56%;
+        top: -4px;
+        width: 13px;
+        height: 13px;
+        background: var(--teal);
+        border-radius: 50%;
+      }
+      .widget-arc {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: conic-gradient(var(--coral) 0 68%, #dae4e3 68%);
+        display: grid;
+        place-items: center;
+        border: 0;
+        padding: 12px;
+      }
+      .arc-inner {
+        width: 100%;
+        height: 100%;
+        background: #f5f8f7;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 16px;
+      }
+      .inspector {
+        padding-bottom: 17px;
+      }
+      .inspector-body {
+        padding: 14px 16px 0;
+      }
+      .inspector-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--line);
+      }
+      .inspector-tabs button {
+        flex: 1;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        background: var(--panel);
+        color: var(--muted);
+        padding: 10px 6px;
+        font-size: 11px;
+        font-weight: 800;
+      }
+      .inspector-tabs button.active {
+        color: var(--teal-dark);
+        border-color: var(--teal);
+      }
+      .inspector-tab {
+        display: none;
+      }
+      .inspector-tab.active {
+        display: block;
+      }
+      .inspector:not(.has-selection) .inspector-tabs,
+      .inspector:not(.has-selection) .inspector-body {
+        display: none;
+      }
+      .color-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+      }
+      .color-grid .field {
+        margin-bottom: 9px;
+      }
+      .color-grid input[type="color"] {
+        width: 100%;
+        height: 31px;
+      }
+      .layer-list {
+        display: grid;
+        gap: 5px;
+        margin-bottom: 12px;
+        max-height: 280px;
+        overflow: auto;
+      }
+      .layer-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 7px;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        font-size: 11px;
+        cursor: pointer;
+      }
+      .layer-item.active {
+        border-color: var(--teal);
+        background: var(--mint);
+        color: var(--teal-dark);
+        font-weight: 800;
+      }
+      .layer-child {
+        margin-left: 14px;
+        border-style: dashed;
+        font-size: 10px;
+      }
+      .layer-grip {
+        margin-left: auto;
+        color: var(--muted);
+        cursor: grab;
+        letter-spacing: 2px;
+      }
+      .layout-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+      }
+      .layout-actions button {
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--panel);
+        color: var(--ink);
+        padding: 8px 5px;
+        font-size: 10px;
+        font-weight: 700;
+      }
+      .layout-actions button:hover {
+        border-color: var(--teal);
+      }
+      .font-preview {
+        font-size: 14px;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        margin-top: 8px;
+      }
+      .library-link {
+        color: var(--teal-dark);
+        text-decoration: none;
+        font-size: 10px;
+        font-weight: 800;
+      }
+      .inline-edit {
+        outline: 1px dashed var(--coral);
+        cursor: text;
+      }
+      .icon-picker {
+        width: min(760px, calc(100vw - 40px));
+      }
+      .icon-search {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 9px;
+        margin: 12px 0;
+        color: var(--ink);
+        background: var(--panel);
+      }
+      .icon-grid {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 7px;
+        max-height: 310px;
+        overflow: auto;
+      }
+      .icon-choice {
+        min-height: 52px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--panel);
+        color: var(--ink);
+        display: grid;
+        place-items: center;
+        gap: 2px;
+        font-size: 10px;
+      }
+      .icon-choice span {
+        font-family: "Material Symbols Outlined";
+        font-size: 22px;
+      }
+      .field {
+        margin-bottom: 14px;
+      }
+      .field label {
+        display: flex;
+        justify-content: space-between;
+        color: #607078;
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        margin-bottom: 7px;
+      }
+      .field label em {
+        color: #a1adaf;
+        font-style: normal;
+        font-weight: 600;
+        text-transform: none;
+        letter-spacing: 0;
+      }
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 8px 9px;
+        color: var(--ink);
+        background: #fcfdfc;
+        outline: none;
+        font-size: 12px;
+      }
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        border-color: var(--teal);
+        box-shadow: 0 0 0 3px rgba(24, 167, 149, 0.1);
+      }
+      .field textarea {
+        resize: vertical;
+        min-height: 105px;
+        font-family: "SFMono-Regular", Consolas, monospace;
+        font-size: 10px;
+        line-height: 1.55;
+      }
+      .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+      }
+      .color-line {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      input[type="color"] {
+        width: 34px;
+        height: 32px;
+        padding: 2px;
+        border-radius: 6px;
+      }
+      .range-line {
+        display: grid;
+        grid-template-columns: 1fr 38px;
+        gap: 8px;
+        align-items: center;
+      }
+      input[type="range"] {
+        accent-color: var(--teal);
+        width: 100%;
+      }
+      .range-value {
+        color: var(--teal-dark);
+        font-weight: 800;
+        font-size: 11px;
+        text-align: right;
+      }
+      .editor-mode {
+        display: flex;
+        border-bottom: 1px solid var(--line);
+      }
+      .editor-mode button {
+        flex: 1;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        padding: 10px;
+        color: var(--muted);
+        background: #fff;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .editor-mode button.active {
+        color: var(--teal-dark);
+        border-color: var(--teal);
+      }
+      .code-pane {
+        display: none;
+        grid-column: 2 / 4;
+      }
+      .code-pane.active {
+        display: block;
+      }
+      .visual-pane.hidden {
+        display: none;
+      }
+      .validation-toast {
+        position: fixed;
+        right: 24px;
+        bottom: 22px;
+        padding: 13px 16px;
+        background: #10252b;
+        color: #e7f5f1;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+        font-size: 12px;
+        opacity: 0;
+        transform: translateY(10px);
+        pointer-events: none;
+        transition: 0.2s;
+      }
+      .validation-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(16, 37, 43, 0.42);
+        z-index: 10;
+        place-items: center;
+      }
+      .modal-backdrop.show {
+        display: grid;
+      }
+      .modal {
+        width: 440px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 25px 80px rgba(16, 37, 43, 0.25);
+        padding: 23px;
+      }
+      .modal h2 {
+        margin: 0 0 7px;
+        font-size: 19px;
+      }
+      .modal p {
+        margin: 0 0 18px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 20px;
+      }
+      .modal .primary {
+        border: 0;
+        background: var(--teal);
+        color: white;
+        border-radius: 6px;
+        padding: 9px 14px;
+        font-weight: 800;
+        font-size: 12px;
+      }
+      .docs-modal {
+        width: min(720px, calc(100vw - 40px));
+      }
+      .docs-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px 24px;
+      }
+      .docs-grid h3 {
+        font-size: 12px;
+        margin: 0 0 5px;
+        color: var(--teal-dark);
+      }
+      body.dark .docs-grid h3 {
+        color: #62dbc8;
+      }
+      .docs-grid p {
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.5;
+        margin: 0;
+      }
+      .live-state {
+        color: var(--teal-dark);
+        font-size: 10px;
+        font-weight: 800;
+        margin-top: 4px;
+      }
+      body.dark .live-state {
+        color: #62dbc8;
+      }
+      .toast-error {
+        background: #6d2e27;
+      }
+      @media (max-width: 1200px) {
+        .editor-grid {
+          grid-template-columns: 205px minmax(0, 1fr) 245px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">W</div>
+          <div>
+            <strong>WinX Studio</strong><small>Rainmeter builder</small>
+          </div>
+        </div>
+        <div>
+          <p class="side-label">Workspace</p>
+          <nav class="nav">
+            <button class="active">
+              <span class="icon">⌘</span>Widget editor
+            </button>
+            <button><span class="icon">◈</span>My projects</button>
+            <button><span class="icon">▦</span>Asset library</button>
+          </nav>
+        </div>
+        <div>
+          <p class="side-label">Home Assistant</p>
+          <nav class="nav">
+            <button id="connectionNav">
+              <span class="icon">⌁</span>Connection
+            </button>
+            <button id="docsNav">
+              <span class="icon">?</span>Docs & support
+            </button>
+          </nav>
+        </div>
+        <div class="sidebar-bottom">
+          <div class="status-line">
+            <span class="dot"></span
+            ><strong id="connectionStatus">Not connected</strong>
+          </div>
+          <div class="status-sub" id="connectionSub">
+            Add your Home Assistant details to enable live controls.
+          </div>
+        </div>
+      </aside>
+      <main class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>Projects</span><span class="crumb-arrow">/</span
+            ><strong>Living room climate</strong
+            ><span class="crumb-arrow">/</span><span>Editor</span>
+          </div>
+          <div class="top-actions">
+            <span class="live-pill"
+              ><span class="dot"></span
+              ><span id="liveStatus">Offline</span></span
+            >
+            <button class="theme-toggle" id="themeToggle">☾ Dark</button>
+            <button id="importBtn">↓&nbsp; Import</button
+            ><button id="exportBtn">↑&nbsp; Export</button
+            ><button class="validate" id="validateBtn">✓&nbsp; Validate</button
+            ><button class="build" id="buildBtn" disabled>Build skin</button
+            ><input type="file" id="fileInput" accept=".json,.winx" hidden />
+          </div>
+        </header>
+        <section class="workspace">
+          <div class="page-heading">
+            <div>
+              <h1>Widget editor</h1>
+              <p class="subtitle">
+                Compose a live Rainmeter skin for your Home Assistant dashboard.
+              </p>
+            </div>
+            <div class="project-meta">
+              <strong>Living room climate</strong><br /><span
+                >Unsaved changes · 320 × 520 px</span
+              >
+            </div>
+          </div>
+          <div class="editor-mode">
+            <button class="active" data-mode="visual">Visual editor</button
+            ><button data-mode="code">Code editor</button>
+          </div>
+          <div class="visual-pane" id="visualPane">
+            <div class="editor-grid">
+              <section class="panel assets">
+                <div class="panel-heading">
+                  <h2>Assets</h2>
+                  <a
+                    class="library-link"
+                    href="https://beecho01.github.io/material-symbols-iconfinder/"
+                    target="_blank"
+                    rel="noreferrer"
+                    >Material icons ↗</a
+                  >
+                </div>
+                <div class="asset-tabs">
+                  <button class="active">Controls</button><button>Shapes</button
+                  ><button>Data</button>
+                </div>
+                <div class="asset-list">
+                  <div
+                    class="asset"
+                    draggable="true"
+                    data-category="controls"
+                    data-type="button"
+                  >
+                    <div class="asset-preview">↗</div>
+                    <div>
+                      <strong>Button</strong><small>Trigger an action</small>
+                    </div>
+                  </div>
+                  <div
+                    class="asset"
+                    draggable="true"
+                    data-category="controls"
+                    data-type="light"
+                  >
+                    <div class="asset-preview"><span class="widget-icon">lightbulb</span></div>
+                    <div>
+                      <strong>Light</strong><small>Control a light</small>
+                    </div>
+                  </div>
+                  <div
+                    class="asset"
+                    draggable="true"
+                    data-category="controls"
+                    data-type="switch"
+                  >
+                    <div class="asset-preview">
+                      <span class="preview-switch"></span>
+                    </div>
+                    <div>
+                      <strong>Switch</strong><small>Toggle a device</small>
+                    </div>
+                  </div>
+                  <div
+                    class="asset"
+                    draggable="true"
+                    data-category="controls"
+                    data-type="slider"
+                  >
+                    <div class="asset-preview">
+                      <span class="preview-slider"></span>
+                    </div>
+                    <div>
+                      <strong>Slider</strong><small>Set a number</small>
+                    </div>
+                  </div>
+                  <div
+                    class="asset"
+                    draggable="true"
+                    data-category="data"
+                    data-type="sensor"
+                  >
+                    <div class="asset-preview">
+                      <span class="preview-tile">72°</span>
+                    </div>
+                    <div>
+                      <strong>Sensor tile</strong
+                      ><small>Show entity state</small>
+                    </div>
+                  </div>
+                  <div
+                    class="asset"
+                    draggable="true"
+                    data-category="data"
+                    data-type="arc"
+                  >
+                    <div class="asset-preview">◔</div>
+                    <div>
+                      <strong>Arc gauge</strong><small>Visualize a value</small>
+                    </div>
+                  </div>
+                  <div
+                    class="asset"
+                    draggable="true"
+                    data-category="shapes"
+                    data-type="rectangle"
+                  >
+                    <div class="asset-preview">□</div>
+                    <div>
+                      <strong>Rectangle</strong><small>Build a surface</small>
+                    </div>
+                  </div>
+                  <div
+                    class="asset"
+                    draggable="true"
+                    data-category="shapes"
+                    data-type="container"
+                  >
+                    <div class="asset-preview">▣</div>
+                    <div>
+                      <strong>Container</strong><small>Resizable surface</small>
+                    </div>
+                  </div>
+                  <div
+                    class="asset"
+                    draggable="true"
+                    data-category="data"
+                    data-type="text"
+                  >
+                    <div class="asset-preview">Tt</div>
+                    <div>
+                      <strong>Text</strong><small>Editable typography</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="custom-assets" id="customAssets" hidden>
+                  <p class="custom-assets-title">Saved custom assets</p>
+                  <div class="asset-list" id="customAssetList"></div>
+                </div>
+              </section>
+              <section class="panel canvas-wrap">
+                <div class="canvas-toolbar">
+                  <div class="canvas-size">
+                    <span>Preview · Windows desktop</span
+                    ><select id="screenSize" aria-label="Screen size">
+                      <option value="1920x1080">1920 × 1080</option>
+                      <option value="2560x1440">2560 × 1440</option>
+                      <option value="1366x768">1366 × 768</option>
+                      <option value="3840x2160">3840 × 2160</option>
+                    </select>
+                  </div>
+                  <button id="clearCanvas">Clear canvas</button>
+                </div>
+                <div class="canvas" id="canvas">
+                  <div class="canvas-empty" id="emptyState">
+                    <span
+                      ><b>Drop an asset here</b><br />Start with a control or
+                      sensor tile</span
+                    >
+                  </div>
+                </div>
+              </section>
+              <section class="panel inspector">
+                <div class="panel-heading">
+                  <h2>Inspector</h2>
+                  <span id="selectionLabel">No selection</span>
+                </div>
+                <div class="inspector-tabs">
+                  <button class="active" data-inspector-tab="design">
+                    Design</button
+                  ><button data-inspector-tab="layers">Layers</button
+                  ><button data-inspector-tab="layout">Layout</button>
+                </div>
+                <div class="inspector-body">
+                  <div class="inspector-tab active" id="designTab">
+                    <div class="field">
+                      <label>Entity type</label
+                      ><select id="entityDomain">
+                        <option value="light">Light</option>
+                        <option value="switch">Switch</option>
+                        <option value="sensor">Sensor</option>
+                        <option value="binary_sensor">Binary sensor</option>
+                        <option value="climate">Climate</option>
+                        <option value="media_player">Media player</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label>Entity ID <em>Required</em></label
+                      ><input id="entityId" placeholder="light.living_room" />
+                    </div>
+                    <div class="field">
+                      <label>Label</label
+                      ><input id="labelInput" placeholder="Living room" />
+                    </div>
+                    <div class="field icon-field" id="iconField">
+                      <label>Icon <em>Material Symbols name</em></label
+                      ><input
+                        id="iconInput"
+                        value="lightbulb"
+                        placeholder="lightbulb"
+                      />
+                    </div>
+                    <div class="field-row">
+                      <div class="field">
+                        <label>Width</label
+                        ><input
+                          id="widthInput"
+                          type="number"
+                          value="120"
+                          min="40"
+                        />
+                      </div>
+                      <div class="field">
+                        <label>Height</label
+                        ><input
+                          id="heightInput"
+                          type="number"
+                          value="62"
+                          min="30"
+                        />
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label>Corner radius <em id="radiusValue">9%</em></label>
+                      <div class="range-line">
+                        <input
+                          id="radiusInput"
+                          type="range"
+                          min="0"
+                          max="100"
+                          value="9"
+                        /><span class="range-value" id="radiusNumber">9</span>
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label>Opacity <em id="opacityValue">92%</em></label>
+                      <div class="range-line">
+                        <input
+                          id="opacityInput"
+                          type="range"
+                          min="20"
+                          max="100"
+                          value="92"
+                        /><span class="range-value" id="opacityNumber">92</span>
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label>Color palette</label>
+                      <div class="color-grid">
+                        <div class="field">
+                          <label>Surface</label
+                          ><input
+                            id="surfaceColor"
+                            type="color"
+                            value="#ffffff"
+                          />
+                        </div>
+                        <div class="field">
+                          <label>Text</label
+                          ><input id="textColor" type="color" value="#12202a" />
+                        </div>
+                        <div class="field">
+                          <label>Control</label
+                          ><input
+                            id="colorInput"
+                            type="color"
+                            value="#18a795"
+                          />
+                        </div>
+                        <div class="field">
+                          <label>Track</label
+                          ><input
+                            id="trackColor"
+                            type="color"
+                            value="#b5dcd5"
+                          />
+                        </div>
+                        <div class="field">
+                          <label>Icon</label
+                          ><input id="iconColor" type="color" value="#ef785f" />
+                        </div>
+                        <div class="field">
+                          <label>Border</label
+                          ><input
+                            id="borderColor"
+                            type="color"
+                            value="#18a795"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label>Text style</label
+                      ><select id="fontFamily">
+                        <option value="Segoe UI">Segoe UI</option>
+                        <option value="Helvetica Neue">
+                          Apple style · Helvetica Neue
+                        </option>
+                        <option value="NDot, Consolas">NDot</option>
+                        <option value="Montserrat, Arial">
+                          Montserrat style
+                        </option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Courier New">Courier New</option>
+                      </select>
+                      <div class="font-preview" id="fontPreview">
+                        WinX Studio
+                      </div>
+                    </div>
+                    <div class="field-row">
+                      <div class="field">
+                        <label>Font size</label
+                        ><input
+                          id="fontSize"
+                          type="number"
+                          value="13"
+                          min="8"
+                          max="72"
+                        />
+                      </div>
+                      <div class="field">
+                        <label>Weight</label
+                        ><select id="fontWeight">
+                          <option value="400">Regular</option>
+                          <option value="600">Semi bold</option>
+                          <option value="700">Bold</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="inspector-tab" id="layersTab">
+                    <div class="field">
+                      <label>Layer order</label>
+                      <div class="layer-list" id="layerList"></div>
+                    </div>
+                    <div class="layout-actions">
+                      <button id="bringFront">Bring to front</button
+                      ><button id="sendBack">Send to back</button>
+                    </div>
+                  </div>
+                  <div class="inspector-tab" id="layoutTab">
+                    <div class="field">
+                      <label>Align selected to parent</label>
+                      <div class="layout-actions">
+                        <button data-align="left">Align left</button
+                        ><button data-align="center">Center horizontal</button
+                        ><button data-align="top">Align top</button
+                        ><button data-align="middle">Center vertical</button>
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label>Position</label>
+                      <div class="field-row">
+                        <input
+                          id="positionX"
+                          type="number"
+                          aria-label="X position"
+                        /><input
+                          id="positionY"
+                          type="number"
+                          aria-label="Y position"
+                        />
+                      </div>
+                    </div>
+                    <p class="subtitle">
+                      Select two or more assets to align them to the first
+                      selected item.
+                    </p>
+                  </div>
+                  <button
+                    class="secondary"
+                    id="saveCustomAsset"
+                    style="width: 100%; margin-top: 8px"
+                  >
+                    Save as custom asset
+                  </button>
+                  <button
+                    class="secondary"
+                    id="deleteWidget"
+                    style="width: 100%; margin-top: 3px"
+                  >
+                    Remove selected asset
+                  </button>
+                </div>
+              </section>
+            </div>
+          </div>
+          <section class="panel code-pane" id="codePane">
+            <div class="panel-heading">
+              <h2>Skin source</h2>
+              <span>Rainmeter-ready configuration</span>
+            </div>
+            <div style="padding: 16px">
+              <textarea
+                id="codeEditor"
+                style="
+                  width: 100%;
+                  height: 600px;
+                  border: 1px solid var(--line);
+                  border-radius: 7px;
+                  padding: 14px;
+                  font-family: Consolas, monospace;
+                  font-size: 12px;
+                  line-height: 1.6;
+                  color: #29434a;
+                  background: #f8fbfa;
+                  resize: vertical;
+                "
+              ></textarea>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+    <div class="validation-toast" id="toast"></div>
+    <div class="modal-backdrop" id="iconBackdrop">
+      <div class="modal icon-picker">
+        <h2>Material Symbols</h2>
+        <p>Select an icon for this button or switch.</p>
+        <input
+          class="icon-search"
+          id="iconSearch"
+          placeholder="Search icons, e.g. lightbulb"
+        />
+        <div class="icon-grid" id="iconGrid"></div>
+        <div class="modal-actions">
+          <button class="primary" id="closeIcons">Close catalog</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-backdrop" id="docsBackdrop">
+      <div class="modal docs-modal">
+        <h2>WinX Studio guide</h2>
+        <p>
+          Build a Rainmeter skin visually, connect Home Assistant, then export a
+          ready-to-install file.
+        </p>
+        <div class="docs-grid">
+          <div>
+            <h3>Connect Home Assistant</h3>
+            <p>
+              Open Connection, enter your URL, port, and long-lived access
+              token. The token is used for REST requests from this browser.
+            </p>
+          </div>
+          <div>
+            <h3>Add entities</h3>
+            <p>
+              Drop a Button, Switch, Slider, or Sensor tile onto the canvas.
+              Select it, choose its domain, and enter an entity ID such as
+              light.living_room.
+            </p>
+          </div>
+          <div>
+            <h3>Build a widget</h3>
+            <p>
+              Drag assets to position them. Use Width, Height, Corner radius,
+              Opacity, and Accent color in the Inspector. Set radius to 100 for
+              a circle.
+            </p>
+          </div>
+          <div>
+            <h3>Import and export</h3>
+            <p>
+              Export saves the editable project as JSON. Import restores widget
+              positions and settings for continued editing.
+            </p>
+          </div>
+          <div>
+            <h3>Validate and build</h3>
+            <p>
+              Validate checks the canvas and entity bindings. Build skin
+              downloads a Rainmeter .ini with runtime variables for Home
+              Assistant.
+            </p>
+          </div>
+          <div>
+            <h3>Live state syncing</h3>
+            <p>
+              When connected, WinX polls bound entities every 10 seconds.
+              Switches and buttons call their matching Home Assistant service.
+            </p>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="primary" id="closeDocs">Close guide</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-backdrop" id="modalBackdrop">
+      <div class="modal">
+        <h2 id="modalTitle">Connect Home Assistant</h2>
+        <p id="modalIntro">
+          Your connection details stay in this browser and are used only to
+          power live widget controls.
+        </p>
+        <div class="field">
+          <label>Home Assistant URL</label
+          ><input id="haUrl" placeholder="http://homeassistant.local" />
+        </div>
+        <div class="field">
+          <label>Port</label><input id="haPort" value="8123" />
+        </div>
+        <div class="field">
+          <label>Long-lived access token</label
+          ><input id="haToken" type="password" placeholder="Paste token" />
+        </div>
+        <div
+          class="connection-result"
+          id="connectionResult"
+          role="status"
+          aria-live="polite"
+        ></div>
+        <div class="modal-actions">
+          <button class="secondary" id="cancelModal">Cancel</button
+          ><button class="secondary" id="testConnection">Test connection</button
+          ><button class="primary" id="saveConnection">Save connection</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      const canvas = document.getElementById("canvas");
+      const emptyState = document.getElementById("emptyState");
+      const widgets = [];
+      let selected = null;
+      let selectedWidgets = [];
+      let validated = false;
+      let dragType = null;
+      const defaults = {
+        button: { label: "Turn on", width: 112, height: 56 },
+        light: { label: "Living room light", width: 164, height: 62 },
+        switch: { label: "Ceiling light", width: 156, height: 62 },
+        slider: { label: "Brightness", width: 168, height: 70 },
+        sensor: { label: "Temperature", width: 138, height: 78 },
+        arc: { label: "Humidity", width: 104, height: 104 },
+        rectangle: { label: "Surface", width: 150, height: 90 },
+        container: { label: "Container", width: 150, height: 150 },
+        text: { label: "Edit this text", width: 150, height: 45 },
+      };
+      const $ = (id) => document.getElementById(id);
+      let screenSize = localStorage.getItem("winx-screen-size") || "1920x1080";
+      let connection = JSON.parse(
+        localStorage.getItem("winx-connection") || "null",
+      );
+      let syncTimer = null;
+      function showToast(message, error = false) {
+        const toast = $("toast");
+        toast.textContent = message;
+        toast.classList.toggle("toast-error", error);
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2800);
+      }
+      function makeWidget(
+        type,
+        x = 70 + widgets.length * 14,
+        y = 80 + widgets.length * 18,
+      ) {
+        const base = defaults[type];
+        const widget = {
+          id: Date.now() + Math.random(),
+          type,
+          x,
+          y,
+          label: base.label,
+          entity: "",
+          domain:
+            type === "sensor"
+              ? "sensor"
+              : type === "switch"
+                ? "switch"
+                : "light",
+          width: base.width,
+          height: base.height,
+          radius: type === "arc" ? 50 : 9,
+          opacity: 92,
+          color: type === "arc" ? "#ef785f" : "#18a795",
+          on: false,
+          state: type === "sensor" ? "72" : type === "slider" ? "62" : "off",
+          icon: ["button", "switch", "light"].includes(type)
+            ? type === "button"
+              ? "touch_app"
+              : "lightbulb"
+            : "",
+          layers: ["content"],
+          colors: {
+            surface: "#ffffff",
+            text: "#12202a",
+            control: type === "arc" ? "#ef785f" : "#18a795",
+            track: "#b5dcd5",
+            icon: "#ef785f",
+            border: type === "arc" ? "#ef785f" : "#18a795",
+          },
+          font: { family: "Segoe UI", size: 13, weight: 400 },
+        };
+        widgets.push(widget);
+        selectWidget(widget);
+        render();
+      }
+      function selectWidget(widget) {
+        selected = widget;
+        selectedWidgets = widget ? [widget] : [];
+        document
+          .querySelector(".inspector")
+          .classList.toggle("has-selection", Boolean(widget));
+        $("selectionLabel").textContent = widget ? widget.type : "No selection";
+        syncInspector();
+      }
+      function syncInspector() {
+        if (!selected) return;
+        selected.colors ||= {
+          surface: "#ffffff",
+          text: "#12202a",
+          control: selected.color || "#18a795",
+          track: "#b5dcd5",
+          icon: "#ef785f",
+          border: selected.color || "#18a795",
+        };
+        selected.font ||= { family: "Segoe UI", size: 13, weight: 400 };
+        $("entityDomain").value = selected.domain;
+        $("entityId").value = selected.entity;
+        $("labelInput").value = selected.label;
+        $("widthInput").value = selected.width;
+        $("heightInput").value = selected.height;
+        $("radiusInput").value = selected.radius;
+        $("radiusNumber").textContent = selected.radius;
+        $("radiusValue").textContent = selected.radius + "%";
+        $("opacityInput").value = selected.opacity;
+        $("opacityNumber").textContent = selected.opacity;
+        $("opacityValue").textContent = selected.opacity + "%";
+        $("colorInput").value = selected.color;
+        Object.entries(selected.colors || {}).forEach(([key, value]) => {
+          const input = $(key === "control" ? "colorInput" : `${key}Color`);
+          if (input) input.value = value;
+        });
+        $("fontFamily").value = selected.font?.family || "Segoe UI";
+        $("fontSize").value = selected.font?.size || 13;
+        $("fontWeight").value = selected.font?.weight || 400;
+        $("iconField").classList.toggle(
+          "visible",
+          ["button", "switch", "light"].includes(selected.type),
+        );
+        $("iconInput").value = selected.icon || "";
+        $("positionX").value = Math.round(selected.x);
+        $("positionY").value = Math.round(selected.y);
+        renderLayers();
+      }
+      function widgetMarkup(widget) {
+        let inner = "";
+        if (["switch", "light"].includes(widget.type))
+          inner = `<div class="widget-switch ${widget.on ? "on" : ""}"><div><div class="widget-title">${widget.icon ? `<span class="widget-icon">${widget.icon}</span>` : ""}${widget.label}</div><div class="widget-value" style="font-size:13px">${widget.on ? "On" : "Off"}</div></div><span class="switch-track"></span></div>`;
+        else if (widget.type === "button")
+          inner = `<div class="widget-title">${widget.icon ? `<span class="widget-icon">${widget.icon}</span>` : ""}${widget.label}</div><div style="font-size:13px;margin-top:5px">${widget.on ? "On" : "Off"}</div>`;
+        else if (widget.type === "slider")
+          inner = `<div class="widget-title">${widget.label}</div><div class="widget-value" style="font-size:15px">${widget.state}%</div><div class="slider-line"></div>`;
+        else if (widget.type === "sensor")
+          inner = `<div class="widget-title">${widget.label}</div><div class="widget-value">${widget.state}°</div>`;
+        else if (widget.type === "arc")
+          inner = `<div class="arc-inner">${widget.state}%</div>`;
+        else if (widget.type === "container")
+          inner = `<div class="widget-title">${widget.label}</div>`;
+        else if (widget.type === "text") inner = `<div>${widget.label}</div>`;
+        else inner = `<div class="widget-title">${widget.label}</div>`;
+        return inner;
+      }
+      function render() {
+        emptyState.style.display = widgets.length ? "none" : "grid";
+        canvas.querySelectorAll(".widget").forEach((node) => node.remove());
+        widgets.forEach((widget) => {
+          const node = document.createElement("div");
+          node.className = `widget widget-${widget.type}${selectedWidgets.includes(widget) ? " selected" : ""}`;
+          node.dataset.id = widget.id;
+          node.style.left = widget.x + "px";
+          node.style.top = widget.y + "px";
+          node.style.width = widget.width + "px";
+          node.style.height = widget.height + "px";
+          node.style.borderRadius = widget.radius + "%";
+          node.style.opacity = widget.opacity / 100;
+          node.style.borderColor = widget.colors?.border || widget.color;
+          node.style.color = widget.colors?.text || widget.color;
+          node.style.fontFamily = widget.font?.family || "Segoe UI";
+          node.style.fontSize = `${widget.font?.size || 13}px`;
+          node.style.fontWeight = widget.font?.weight || 400;
+          if (widget.type === "button" || widget.type === "container")
+            node.style.background =
+              widget.type === "container"
+                ? `${widget.colors?.surface || widget.color}cc`
+                : widget.colors?.control || widget.color;
+          if (widget.type === "arc")
+            node.style.background = `conic-gradient(${widget.color} 0 68%, #dae4e3 68%)`;
+          node.innerHTML = widgetMarkup(widget);
+          const resizeHandle = document.createElement("span");
+          resizeHandle.className = "resize-handle";
+          resizeHandle.setAttribute("aria-label", "Resize asset");
+          node.appendChild(resizeHandle);
+          node.addEventListener("click", async (event) => {
+            event.stopPropagation();
+            if (event.shiftKey || event.ctrlKey || event.metaKey) {
+              if (selectedWidgets.includes(widget))
+                selectedWidgets = selectedWidgets.filter(
+                  (item) => item !== widget,
+                );
+              else selectedWidgets.push(widget);
+              selected = selectedWidgets[0] || null;
+              syncInspector();
+              render();
+              return;
+            }
+            selectWidget(widget);
+            render();
+            if (["switch", "light"].includes(widget.type)) {
+              widget.on = !widget.on;
+              render();
+              await callService(widget, widget.on ? "turn_on" : "turn_off");
+            } else if (widget.type === "button") {
+              await callService(widget, "toggle");
+            }
+          });
+          node.addEventListener("dblclick", (event) => {
+            event.stopPropagation();
+            const editable = node.querySelector(".widget-title, .widget-value");
+            if (!editable) return;
+            editable.contentEditable = "true";
+            editable.classList.add("inline-edit");
+            editable.focus();
+            editable.addEventListener(
+              "blur",
+              () => {
+                widget.label = editable.textContent.trim();
+                editable.contentEditable = "false";
+                editable.classList.remove("inline-edit");
+                render();
+              },
+              { once: true },
+            );
+          });
+          node.addEventListener("pointerdown", (event) =>
+            beginMove(event, widget, node),
+          );
+          resizeHandle.addEventListener("pointerdown", (event) =>
+            beginResize(event, widget, node),
+          );
+          canvas.appendChild(node);
+        });
+        updateCode();
+        renderLayers();
+      }
+      function renderLayers() {
+        const list = $("layerList");
+        if (!list) return;
+        list.innerHTML = "";
+        [...widgets].reverse().forEach((widget) => {
+          const item = document.createElement("div");
+          item.className = `layer-item${selectedWidgets.includes(widget) ? " active" : ""}`;
+          item.draggable = true;
+          item.innerHTML = `<span>${widget.type} · ${widget.label}</span><button class="layer-remove" title="Delete layer">×</button><span class="layer-grip" title="Drag to reorder">⋮⋮</span>`;
+          item.addEventListener("dragstart", () => {
+            item.dataset.dragId = widget.id;
+            list.dataset.dragId = widget.id;
+          });
+          item.addEventListener("dragover", (event) => event.preventDefault());
+          item.addEventListener("drop", (event) => {
+            event.preventDefault();
+            const from = widgets.findIndex(
+              (entry) => String(entry.id) === list.dataset.dragId,
+            );
+            const to = widgets.indexOf(widget);
+            if (from < 0 || from === to) return;
+            const [moved] = widgets.splice(from, 1);
+            widgets.splice(to, 0, moved);
+            render();
+          });
+          item.addEventListener("click", (event) => {
+            if (event.target.closest(".layer-remove")) {
+              widgets.splice(widgets.indexOf(widget), 1);
+              selectedWidgets = selectedWidgets.filter(
+                (item) => item !== widget,
+              );
+              selected = selectedWidgets[0] || null;
+              render();
+              return;
+            }
+            if (event.shiftKey || event.ctrlKey || event.metaKey)
+              selectedWidgets.push(widget);
+            else selectedWidgets = [widget];
+            selected = selectedWidgets[0];
+            syncInspector();
+            render();
+          });
+          list.appendChild(item);
+          if (widget.icon) {
+            const iconItem = document.createElement("div");
+            iconItem.className = "layer-item layer-child";
+            iconItem.innerHTML = `<span>↳ icon · ${widget.icon}</span><button class="layer-remove" title="Delete icon layer">×</button>`;
+            iconItem.addEventListener("click", (event) => {
+              event.stopPropagation();
+              if (event.target.closest(".layer-remove")) {
+                widget.icon = "";
+                syncInspector();
+                render();
+              }
+            });
+            list.appendChild(iconItem);
+          }
+        });
+      }
+      function beginMove(event, widget, node) {
+        if (event.target.closest(".switch-track")) return;
+        selectWidget(widget);
+        const startX = event.clientX,
+          startY = event.clientY,
+          startLeft = widget.x,
+          startTop = widget.y;
+        function move(e) {
+          widget.x = startLeft + e.clientX - startX;
+          widget.y = startTop + e.clientY - startY;
+          node.style.left = widget.x + "px";
+          node.style.top = widget.y + "px";
+        }
+        function up() {
+          window.removeEventListener("pointermove", move);
+          window.removeEventListener("pointerup", up);
+          const outside =
+            widget.x + node.offsetWidth < 0 ||
+            widget.y + node.offsetHeight < 0 ||
+            widget.x > canvas.clientWidth ||
+            widget.y > canvas.clientHeight;
+          if (outside) {
+            widgets.splice(widgets.indexOf(widget), 1);
+            selectedWidgets = selectedWidgets.filter((item) => item !== widget);
+            selected = selectedWidgets[0] || null;
+            showToast("Item removed from canvas.");
+            render();
+            return;
+          }
+          updateCode();
+        }
+        window.addEventListener("pointermove", move);
+        window.addEventListener("pointerup", up);
+      }
+      function beginResize(event, widget, node) {
+        event.preventDefault();
+        event.stopPropagation();
+        selectWidget(widget);
+        const startX = event.clientX;
+        const startY = event.clientY;
+        const startWidth = widget.width;
+        const startHeight = widget.height;
+        function resize(moveEvent) {
+          widget.width = Math.max(
+            40,
+            Math.min(
+              canvas.clientWidth - widget.x - 4,
+              startWidth + moveEvent.clientX - startX,
+            ),
+          );
+          widget.height = Math.max(
+            30,
+            Math.min(
+              canvas.clientHeight - widget.y - 4,
+              startHeight + moveEvent.clientY - startY,
+            ),
+          );
+          node.style.width = widget.width + "px";
+          node.style.height = widget.height + "px";
+        }
+        function finish() {
+          window.removeEventListener("pointermove", resize);
+          window.removeEventListener("pointerup", finish);
+          syncInspector();
+          updateCode();
+        }
+        window.addEventListener("pointermove", resize);
+        window.addEventListener("pointerup", finish);
+      }
+      document.querySelectorAll(".asset").forEach((asset) => {
+        asset.addEventListener("dragstart", (event) => {
+          dragType = asset.dataset.type;
+          event.dataTransfer.setData("text/plain", dragType);
+        });
+        asset.addEventListener("click", () => makeWidget(asset.dataset.type));
+      });
+      canvas.addEventListener("dragover", (event) => event.preventDefault());
+      canvas.addEventListener("drop", (event) => {
+        event.preventDefault();
+        const type = event.dataTransfer.getData("text/plain") || dragType;
+        const rect = canvas.getBoundingClientRect();
+        if (type)
+          makeWidget(
+            type,
+            event.clientX - rect.left - 40,
+            event.clientY - rect.top - 20,
+          );
+      });
+      canvas.addEventListener("click", () => {
+        selected = null;
+        selectedWidgets = [];
+        $("selectionLabel").textContent = "No selection";
+        render();
+      });
+      function updateSelected(property, value) {
+        if (!selected) return;
+        selected[property] = value;
+        syncInspector();
+        render();
+      }
+      function haBaseUrl() {
+        if (!connection) return "";
+        return `${connection.url.replace(/\/$/, "")}:${connection.port || "8123"}`;
+      }
+      function formConnection() {
+        return {
+          url: $("haUrl").value.trim().replace(/\/$/, ""),
+          port: $("haPort").value.trim() || "8123",
+          token: $("haToken").value.trim(),
+        };
+      }
+      async function testConnection() {
+        const candidate = formConnection();
+        const result = $("connectionResult");
+        result.className = "connection-result";
+        result.textContent = "Testing connection...";
+        if (!candidate.url || !candidate.token) {
+          result.classList.add("failed");
+          result.textContent =
+            "Connection failed. Check your Home Assistant access token and IP.";
+          $("liveStatus").textContent = "Offline";
+          return;
+        }
+        try {
+          const response = await fetch(
+            `${candidate.url}:${candidate.port}/api/`,
+            {
+              headers: {
+                Authorization: `Bearer ${candidate.token}`,
+                "Content-Type": "application/json",
+              },
+            },
+          );
+          if (!response.ok) throw new Error("request rejected");
+          result.classList.add("ok");
+          result.textContent = "Connection OK!";
+          $("liveStatus").textContent = "Live";
+        } catch {
+          result.classList.add("failed");
+          result.textContent =
+            "Connection failed. Check your Home Assistant access token and IP.";
+          $("liveStatus").textContent = "Offline";
+        }
+      }
+      async function callService(widget, service) {
+        if (!widget.entity)
+          return showToast("Add an entity ID before using this control.", true);
+        if (!connection || !connection.token)
+          return showToast(
+            "Connect Home Assistant to use live controls.",
+            true,
+          );
+        const [domain] = widget.entity.split(".");
+        try {
+          const response = await fetch(
+            `${haBaseUrl()}/api/services/${domain}/${service}`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${connection.token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ entity_id: widget.entity }),
+            },
+          );
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          widget.on = service === "toggle" ? !widget.on : service === "turn_on";
+          widget.state = widget.on ? "on" : "off";
+          render();
+          setTimeout(() => syncEntity(widget), 700);
+          showToast(`${widget.label} updated in Home Assistant.`);
+        } catch (error) {
+          showToast(
+            `Could not update Home Assistant (${error.message}).`,
+            true,
+          );
+        }
+      }
+      async function syncEntity(widget) {
+        if (!connection || !connection.token || !widget.entity) return;
+        try {
+          const response = await fetch(
+            `${haBaseUrl()}/api/states/${widget.entity}`,
+            {
+              headers: {
+                Authorization: `Bearer ${connection.token}`,
+                "Content-Type": "application/json",
+              },
+            },
+          );
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.json();
+          widget.state = data.state;
+          widget.on = ["on", "open", "playing", "home", "true"].includes(
+            String(data.state).toLowerCase(),
+          );
+          render();
+          if (connection) {
+            $("liveStatus").textContent = "Live";
+            $("liveStatus").previousElementSibling.style.background =
+              "var(--teal)";
+          }
+        } catch (error) {
+          console.warn("WinX state sync failed", error);
+        }
+      }
+      function syncAllEntities() {
+        widgets.filter((widget) => widget.entity).forEach(syncEntity);
+      }
+      $("entityDomain").addEventListener("change", (e) =>
+        updateSelected("domain", e.target.value),
+      );
+      $("entityId").addEventListener("input", (e) => {
+        if (selected) {
+          selected.entity = e.target.value;
+          updateCode();
+        }
+      });
+      $("labelInput").addEventListener("input", (e) => {
+        if (selected) {
+          selected.label = e.target.value;
+          render();
+        }
+      });
+      $("widthInput").addEventListener("input", (e) =>
+        updateSelected("width", Number(e.target.value)),
+      );
+      $("heightInput").addEventListener("input", (e) =>
+        updateSelected("height", Number(e.target.value)),
+      );
+      $("radiusInput").addEventListener("input", (e) =>
+        updateSelected("radius", Number(e.target.value)),
+      );
+      $("opacityInput").addEventListener("input", (e) =>
+        updateSelected("opacity", Number(e.target.value)),
+      );
+      $("colorInput").addEventListener("input", (e) => {
+        if (selected) {
+          selected.color = e.target.value;
+          $("colorHex").value = e.target.value;
+          render();
+        }
+      });
+      [
+        "surfaceColor",
+        "textColor",
+        "colorInput",
+        "trackColor",
+        "iconColor",
+        "borderColor",
+      ].forEach((id) =>
+        $(id).addEventListener("input", (event) => {
+          if (!selected) return;
+          const key = id === "colorInput" ? "control" : id.replace("Color", "");
+          selected.colors[key] = event.target.value;
+          selected.color = selected.colors.control;
+          render();
+        }),
+      );
+      $("fontFamily").addEventListener("change", (event) => {
+        if (selected) {
+          selected.font.family = event.target.value;
+          $("fontPreview").style.fontFamily = event.target.value;
+          render();
+        }
+      });
+      $("fontSize").addEventListener("input", (event) => {
+        if (selected) {
+          selected.font.size = Number(event.target.value);
+          render();
+        }
+      });
+      $("fontWeight").addEventListener("change", (event) => {
+        if (selected) {
+          selected.font.weight = Number(event.target.value);
+          render();
+        }
+      });
+      $("iconInput").addEventListener("input", (event) => {
+        if (selected && ["button", "switch", "light"].includes(selected.type)) {
+          selected.icon = event.target.value;
+          render();
+        }
+      });
+      const iconNames = [
+        "lightbulb",
+        "touch_app",
+        "power_settings_new",
+        "home",
+        "settings",
+        "lock",
+        "lock_open",
+        "volume_up",
+        "volume_off",
+        "play_arrow",
+        "pause",
+        "stop",
+        "skip_next",
+        "thermostat",
+        "ac_unit",
+        "water_drop",
+        "wb_sunny",
+        "cloud",
+        "fan_indirect",
+        "local_fire_department",
+        "door_front",
+        "garage",
+        "tv",
+        "speaker",
+        "coffee",
+        "bed",
+        "menu",
+        "close",
+        "add",
+        "remove",
+        "check",
+        "arrow_forward",
+        "favorite",
+        "star",
+        "notifications",
+        "alarm",
+        "light_mode",
+        "dark_mode",
+        "brightness_6",
+        "toggle_on",
+        "toggle_off",
+        "speed",
+        "electric_bolt",
+        "wifi",
+        "bluetooth",
+        "camera",
+        "mic",
+        "edit",
+        "delete",
+      ];
+      function renderIconCatalog(filter = "") {
+        const grid = $("iconGrid");
+        grid.innerHTML = "";
+        iconNames
+          .filter((name) => name.includes(filter.toLowerCase()))
+          .forEach((name) => {
+            const choice = document.createElement("button");
+            choice.className = "icon-choice";
+            choice.innerHTML = `<span>${name}</span><small>${name}</small>`;
+            choice.addEventListener("click", () => {
+              if (!selected) return;
+              selected.icon = name;
+              $("iconInput").value = name;
+              $("iconBackdrop").classList.remove("show");
+              render();
+            });
+            grid.appendChild(choice);
+          });
+      }
+      $("iconInput").addEventListener("focus", () => {
+        renderIconCatalog($("iconSearch").value);
+        $("iconBackdrop").classList.add("show");
+      });
+      $("iconSearch").addEventListener("input", (event) =>
+        renderIconCatalog(event.target.value),
+      );
+      $("closeIcons").addEventListener("click", () =>
+        $("iconBackdrop").classList.remove("show"),
+      );
+      renderIconCatalog();
+      $("saveCustomAsset").addEventListener("click", () => {
+        if (!selected) return;
+        const custom = JSON.parse(
+          localStorage.getItem("winx-custom-assets") || "[]",
+        );
+        custom.push(JSON.parse(JSON.stringify(selected)));
+        localStorage.setItem("winx-custom-assets", JSON.stringify(custom));
+        showToast(`${selected.label} saved as a custom asset.`);
+      });
+      function renderCustomAssets() {
+        const saved = JSON.parse(
+          localStorage.getItem("winx-custom-assets") || "[]",
+        );
+        $("customAssets").hidden = !saved.length;
+        $("customAssetList").innerHTML = "";
+        saved.forEach((asset) => {
+          const item = document.createElement("div");
+          item.className = "asset";
+          item.innerHTML = `<div class="asset-preview">✦</div><div><strong>${asset.label}</strong><small>Saved ${asset.type}</small></div>`;
+          item.addEventListener("click", () => {
+            const copy = JSON.parse(JSON.stringify(asset));
+            copy.id = Date.now() + Math.random();
+            copy.x = 70 + widgets.length * 14;
+            copy.y = 80 + widgets.length * 18;
+            widgets.push(copy);
+            selectWidget(copy);
+            render();
+          });
+          $("customAssetList").appendChild(item);
+        });
+      }
+      renderCustomAssets();
+      document.querySelectorAll(".asset-tabs button").forEach((tab) =>
+        tab.addEventListener("click", () => {
+          document
+            .querySelectorAll(".asset-tabs button")
+            .forEach((item) => item.classList.remove("active"));
+          tab.classList.add("active");
+          const category = tab.textContent.trim().toLowerCase();
+          document
+            .querySelectorAll(".asset[data-category]")
+            .forEach((asset) =>
+              asset.classList.toggle(
+                "is-hidden",
+                asset.dataset.category !== category,
+              ),
+            );
+        }),
+      );
+      document
+        .querySelectorAll(".asset[data-category]")
+        .forEach((asset) =>
+          asset.classList.toggle(
+            "is-hidden",
+            asset.dataset.category !== "controls",
+          ),
+        );
+      $("positionX").addEventListener("input", (event) => {
+        if (selected) updateSelected("x", Number(event.target.value));
+      });
+      $("positionY").addEventListener("input", (event) => {
+        if (selected) updateSelected("y", Number(event.target.value));
+      });
+      document.querySelectorAll("[data-inspector-tab]").forEach((tab) =>
+        tab.addEventListener("click", () => {
+          document
+            .querySelectorAll("[data-inspector-tab]")
+            .forEach((item) => item.classList.remove("active"));
+          document
+            .querySelectorAll(".inspector-tab")
+            .forEach((item) => item.classList.remove("active"));
+          tab.classList.add("active");
+          $(`${tab.dataset.inspectorTab}Tab`).classList.add("active");
+        }),
+      );
+      $("bringFront").addEventListener("click", () => {
+        selectedWidgets.forEach((item) => {
+          widgets.splice(widgets.indexOf(item), 1);
+          widgets.push(item);
+        });
+        render();
+      });
+      $("sendBack").addEventListener("click", () => {
+        selectedWidgets
+          .slice()
+          .reverse()
+          .forEach((item) => {
+            widgets.splice(widgets.indexOf(item), 1);
+            widgets.unshift(item);
+          });
+        render();
+      });
+      document.querySelectorAll("[data-align]").forEach((button) =>
+        button.addEventListener("click", () => {
+          if (selectedWidgets.length < 2)
+            return showToast("Select two or more assets to align.", true);
+          const parent = selectedWidgets[0];
+          selectedWidgets.slice(1).forEach((item) => {
+            if (button.dataset.align === "left") item.x = parent.x;
+            if (button.dataset.align === "center")
+              item.x = parent.x + (parent.width - item.width) / 2;
+            if (button.dataset.align === "top") item.y = parent.y;
+            if (button.dataset.align === "middle")
+              item.y = parent.y + (parent.height - item.height) / 2;
+          });
+          render();
+        }),
+      );
+      document.addEventListener("keydown", (event) => {
+        if (
+          event.key !== "Delete" ||
+          event.target.matches("input, textarea, select")
+        )
+          return;
+        if (!selectedWidgets.length)
+          return showToast("Select an asset first.", true);
+        selectedWidgets.forEach((item) =>
+          widgets.splice(widgets.indexOf(item), 1),
+        );
+        selectedWidgets = [];
+        selected = null;
+        $("selectionLabel").textContent = "No selection";
+        render();
+        showToast("Selected item removed.");
+      });
+      $("deleteWidget").addEventListener("click", () => {
+        if (!selected) return showToast("Select an asset first.", true);
+        selectedWidgets.forEach((item) =>
+          widgets.splice(widgets.indexOf(item), 1),
+        );
+        selectedWidgets = [];
+        selected = null;
+        $("selectionLabel").textContent = "No selection";
+        render();
+      });
+      $("clearCanvas").addEventListener("click", () => {
+        widgets.length = 0;
+        selected = null;
+        selectedWidgets = [];
+        $("selectionLabel").textContent = "No selection";
+        render();
+      });
+      document.querySelectorAll("[data-mode]").forEach((tab) =>
+        tab.addEventListener("click", () => {
+          document
+            .querySelectorAll("[data-mode]")
+            .forEach((item) => item.classList.remove("active"));
+          tab.classList.add("active");
+          const isCode = tab.dataset.mode === "code";
+          $("visualPane").classList.toggle("hidden", isCode);
+          $("codePane").classList.toggle("active", isCode);
+        }),
+      );
+      function skinData() {
+        return {
+          version: 1,
+          name: "Living room climate",
+          screen: {
+            width: Number(screenSize.split("x")[0]),
+            height: Number(screenSize.split("x")[1]),
+          },
+          canvas: { width: 320, height: 520 },
+          widgets,
+        };
+      }
+      function updateCode() {
+        const lines = [
+          "[Rainmeter]",
+          "Update=1000",
+          "BackgroundMode=2",
+          "SolidColor=16,37,43,255",
+          "",
+          "[Metadata]",
+          "Name=Living room climate",
+          "Author=WinX Studio",
+          "",
+          "[Variables]",
+          `ScreenWidth=${screenSize.split("x")[0]}`,
+          `ScreenHeight=${screenSize.split("x")[1]}`,
+          `HAUrl=${haBaseUrl() || "http://homeassistant.local:8123"}`,
+          "HAToken=SET_IN_RAINMETER_ENVIRONMENT",
+          "HAUpdateInterval=10",
+        ];
+        widgets.forEach((widget, index) => {
+          lines.push(
+            "",
+            `[Widget${index + 1}]`,
+            "Meter=String",
+            `Text=${widget.label}`,
+            `X=${Math.round(widget.x)}`,
+            `Y=${Math.round(widget.y)}`,
+            `W=${widget.width}`,
+            `H=${widget.height}`,
+            `FontColor=${hexToRgb(widget.color)},255`,
+            `Icon=${widget.icon || ""}`,
+            `Shape=Rectangle 0,0,${widget.width},${widget.height},${Math.round((Math.min(widget.width, widget.height) * widget.radius) / 100)}`,
+          );
+          if (widget.entity) {
+            lines.push(
+              `HAEntity${index + 1}=${widget.entity}`,
+              `; Entity domain: ${widget.domain}`,
+              "DynamicVariables=1",
+              `Text=${widget.label}: [HAState${index + 1}]`,
+              "",
+              `[HAState${index + 1}]`,
+              "Measure=WebParser",
+              `URL=#HAUrl#/api/states/#HAEntity${index + 1}#`,
+              "Header=Authorization: Bearer #HAToken#",
+              'RegExp=(?si)"state":"([^"]+)"',
+            );
+          }
+        });
+        $("codeEditor").value = lines.join("\n");
+      }
+      function hexToRgb(hex) {
+        const value = hex.replace("#", "");
+        return [
+          parseInt(value.substring(0, 2), 16),
+          parseInt(value.substring(2, 4), 16),
+          parseInt(value.substring(4, 6), 16),
+        ].join(",");
+      }
+      function setScreenSize(value) {
+        screenSize = value;
+        localStorage.setItem("winx-screen-size", value);
+        const [width, height] = value.split("x").map(Number);
+        canvas.style.aspectRatio = `${width} / ${height}`;
+        canvas.classList.toggle("screen-fit", height <= 900);
+        updateCode();
+      }
+      function startSync() {
+        clearInterval(syncTimer);
+        if (!connection) return;
+        syncAllEntities();
+        syncTimer = setInterval(syncAllEntities, 10000);
+      }
+      $("validateBtn").addEventListener("click", () => {
+        const missing = widgets.filter(
+          (widget) =>
+            ["button", "switch", "light", "slider"].includes(widget.type) &&
+            !widget.entity,
+        );
+        if (!widgets.length)
+          return showToast("Add at least one asset before validating.", true);
+        if (missing.length)
+          return showToast(
+            `${missing.length} control${missing.length > 1 ? "s are" : " is"} missing an entity ID.`,
+            true,
+          );
+        validated = true;
+        $("buildBtn").disabled = false;
+        showToast("Validation passed. Your skin is ready to build.");
+      });
+      $("buildBtn").addEventListener("click", () => {
+        if (
+          !validated &&
+          !confirm("This project has not been validated. Build anyway?")
+        )
+          return;
+        const blob = new Blob([$("codeEditor").value], { type: "text/plain" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "Living-room-climate.ini";
+        link.click();
+        URL.revokeObjectURL(link.href);
+        showToast("Rainmeter .ini skin downloaded.");
+      });
+      $("exportBtn").addEventListener("click", () => {
+        const blob = new Blob([JSON.stringify(skinData(), null, 2)], {
+          type: "application/json",
+        });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "living-room-climate.winx.json";
+        link.click();
+        URL.revokeObjectURL(link.href);
+        showToast("Project exported.");
+      });
+      $("importBtn").addEventListener("click", () => $("fileInput").click());
+      $("fileInput").addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const data = JSON.parse(reader.result);
+            widgets.splice(0, widgets.length, ...(data.widgets || []));
+            selected = null;
+            render();
+            showToast("Project imported.");
+          } catch {
+            showToast("That file could not be imported.", true);
+          }
+        };
+        reader.readAsText(file);
+      });
+      function openConnection() {
+        if (connection) {
+          $("haUrl").value = connection.url || "";
+          $("haPort").value = connection.port || "8123";
+          $("haToken").value = connection.token || "";
+        }
+        $("connectionResult").textContent = "";
+        $("connectionResult").className = "connection-result";
+        $("modalBackdrop").classList.add("show");
+      }
+      $("connectionNav").addEventListener("click", openConnection);
+      $("testConnection").addEventListener("click", testConnection);
+      $("cancelModal").addEventListener("click", () =>
+        $("modalBackdrop").classList.remove("show"),
+      );
+      $("saveConnection").addEventListener("click", () => {
+        if (!$("haUrl").value || !$("haToken").value)
+          return showToast("URL and token are required.", true);
+        const candidate = formConnection();
+        localStorage.setItem("winx-connection", JSON.stringify(candidate));
+        connection = candidate;
+        $("connectionStatus").textContent = "Connected";
+        $("connectionSub").textContent =
+          `${$("haUrl").value}:${$("haPort").value}`;
+        $("modalBackdrop").classList.remove("show");
+        startSync();
+        showToast("Home Assistant connection saved.");
+      });
+      $("themeToggle").addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        const dark = document.body.classList.contains("dark");
+        localStorage.setItem("winx-theme", dark ? "dark" : "light");
+        $("themeToggle").textContent = dark ? "☀ Light" : "☾ Dark";
+      });
+      $("docsNav").addEventListener("click", () =>
+        $("docsBackdrop").classList.add("show"),
+      );
+      $("closeDocs").addEventListener("click", () =>
+        $("docsBackdrop").classList.remove("show"),
+      );
+      $("screenSize").addEventListener("change", (event) =>
+        setScreenSize(event.target.value),
+      );
+      const savedConnection = localStorage.getItem("winx-connection");
+      if (savedConnection) {
+        connection = JSON.parse(savedConnection);
+        $("connectionStatus").textContent = "Connected";
+        $("connectionSub").textContent = `${connection.url}:${connection.port}`;
+        $("liveStatus").textContent = "Live";
+      }
+      const savedTheme = localStorage.getItem("winx-theme");
+      if (savedTheme === "dark") {
+        document.body.classList.add("dark");
+        $("themeToggle").textContent = "☀ Light";
+      }
+      const screenOption = Array.from($("screenSize").options).find(
+        (option) => option.value === screenSize,
+      );
+      if (screenOption) $("screenSize").value = screenSize;
+      else {
+        const option = new Option(
+          `My screen · ${screen.width} × ${screen.height}`,
+          `${screen.width}x${screen.height}`,
+        );
+        $("screenSize").add(option);
+        $("screenSize").value = screenSize;
+      }
+      selectWidget(null);
+      render();
+      setScreenSize(screenSize);
+      startSync();
+      if (!savedConnection) openConnection();
+    </script>
+  </body>
+</html>

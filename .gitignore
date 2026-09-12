@@ -1,0 +1,12 @@
+# Local editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local secrets and generated exports
+.env
+*.token
+*.secret
+*.winx.json
+*.ini
