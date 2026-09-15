@@ -56,7 +56,7 @@ Keep `HAToken` set only on the target computer. Do not distribute tokens in a sk
 4. Press **Test connection**, then save the connection.
 5. Add an asset, select its Home Assistant domain, and enter its complete entity ID, for example `light.living_room`.
 
-The token is stored in browser local storage for this prototype. Do not publish exported connection data or screenshots containing the token. Generated Rainmeter source intentionally uses `HAToken=SET_IN_RAINMETER_ENVIRONMENT` instead of embedding the secret.
+The app stores the connection in browser local storage for convenience. This includes the Home Assistant URL, optional username/password, and the long-lived token. For security, keep this on a trusted device and do not publish exported connection data or screenshots containing the token. Generated Rainmeter source intentionally uses `HAToken=SET_IN_RAINMETER_ENVIRONMENT` instead of embedding the secret.
 
 For a deployed site, configure Home Assistant CORS to allow the site origin. HTTPS pages generally cannot call an HTTP Home Assistant URL because of browser mixed-content rules.
 

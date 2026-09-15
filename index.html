@@ -1615,6 +1615,12 @@
           <label>Port</label><input id="haPort" value="8123" />
         </div>
         <div class="field">
+          <label>Username</label><input id="haUser" placeholder="Optional username" />
+        </div>
+        <div class="field">
+          <label>Password</label><input id="haPass" type="password" placeholder="Optional password" />
+        </div>
+        <div class="field">
           <label>Long-lived access token</label
           ><input id="haToken" type="password" placeholder="Paste token" />
         </div>
@@ -2035,6 +2041,8 @@
         return {
           url: $("haUrl").value.trim().replace(/\/$/, ""),
           port: $("haPort").value.trim() || "8123",
+          username: $("haUser").value.trim(),
+          password: $("haPass").value.trim(),
           token: $("haToken").value.trim(),
         };
       }
@@ -2621,6 +2629,8 @@
         if (connection) {
           $("haUrl").value = connection.url || "";
           $("haPort").value = connection.port || "8123";
+          $("haUser").value = connection.username || "";
+          $("haPass").value = connection.password || "";
           $("haToken").value = connection.token || "";
         }
         $("connectionResult").textContent = "";
@@ -2633,9 +2643,11 @@
         $("modalBackdrop").classList.remove("show"),
       );
       $("saveConnection").addEventListener("click", () => {
-        if (!$("haUrl").value || !$("haToken").value)
-          return showToast("URL and token are required.", true);
+        if (!$("haUrl").value)
+          return showToast("Home Assistant URL is required.", true);
         const candidate = formConnection();
+        if (!candidate.token && !(candidate.username && candidate.password))
+          return showToast("Add a token or a saved username/password pair.", true);
         localStorage.setItem("winx-connection", JSON.stringify(candidate));
         connection = candidate;
         $("connectionStatus").textContent = "Connected";
