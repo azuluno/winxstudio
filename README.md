@@ -2,6 +2,12 @@
 
 WinX Studio is a browser-based visual builder for Home Assistant-powered Rainmeter desktop widgets on Windows.
 
+## Live demo
+
+Open the deployed app here: https://azuluno.github.io/winxstudio/
+
+The app entry point in this repository is `index.html`. You can open it directly from the GitHub file list by clicking `index.html`, or use the Live demo link for the full GitHub Pages site.
+
 ## Features
 
 - Visual canvas with drag, resize, multi-select, alignment, and layer ordering
@@ -72,6 +78,11 @@ winxstudio/
 │   └── workflows/
 │       └── pages.yml
 ├── .gitignore
+├── Rainmeter/
+│   └── WinXStudio/
+│       ├── HomeAssistantToggle.ini
+│       ├── HomeAssistantService.ps1
+│       └── README.txt
 ├── index.html
 └── README.md
 ```
