@@ -1606,6 +1606,7 @@
           Your connection details stay in this browser and are used only to
           power live widget controls.
         </p>
+        <p class="subtitle" style="margin-bottom:14px">Using the GitHub Pages link? Your Home Assistant URL must use HTTPS. For an HTTP local HA address, run WinX with <code>py -m http.server 8080</code> instead.</p>
         <div class="field">
           <label>Home Assistant URL</label
           ><input id="haUrl" placeholder="http://homeassistant.local" />
@@ -2017,7 +2018,18 @@
       }
       function haBaseUrl() {
         if (!connection) return "";
-        return `${connection.url.replace(/\/$/, "")}:${connection.port || "8123"}`;
+        return normalizeHaUrl(connection.url, connection.port);
+      }
+      function normalizeHaUrl(url, port) {
+        const candidate = url.trim().replace(/\/$/, "");
+        if (!candidate) return "";
+        try {
+          const parsed = new URL(candidate.includes("://") ? candidate : `http://${candidate}`);
+          if (!parsed.port) parsed.port = port || "8123";
+          return parsed.toString().replace(/\/$/, "");
+        } catch {
+          return `${candidate}:${port || "8123"}`;
+        }
       }
       function formConnection() {
         return {
@@ -2040,7 +2052,7 @@
         }
         try {
           const response = await fetch(
-            `${candidate.url}:${candidate.port}/api/`,
+            `${normalizeHaUrl(candidate.url, candidate.port)}/api/`,
             {
               headers: {
                 Authorization: `Bearer ${candidate.token}`,
@@ -2048,14 +2060,21 @@
               },
             },
           );
-          if (!response.ok) throw new Error("request rejected");
+          if (!response.ok) {
+            if (response.status === 401 || response.status === 403) throw new Error("invalid-token");
+            throw new Error(`http-${response.status}`);
+          }
           result.classList.add("ok");
           result.textContent = "Connection OK!";
           $("liveStatus").textContent = "Live";
-        } catch {
+        } catch (error) {
           result.classList.add("failed");
-          result.textContent =
-            "Connection failed. Check your Home Assistant access token and IP.";
+          const reason = error.message === "invalid-token"
+            ? "The token was rejected by Home Assistant. Create or paste a new long-lived access token."
+            : window.location.protocol === "https:" && candidate.url.startsWith("http:")
+            ? "GitHub Pages cannot call an HTTP Home Assistant address from HTTPS. Use an HTTPS HA URL or run WinX locally."
+            : "Check Home Assistant CORS, IP, port, and access token.";
+          result.textContent = `Connection failed. ${reason}`;
           $("liveStatus").textContent = "Offline";
         }
       }

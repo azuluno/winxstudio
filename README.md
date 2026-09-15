@@ -33,6 +33,8 @@ Then open `http://localhost:8080`.
 
 A local server is recommended for Home Assistant API access because browser requests from `file://` pages can be blocked by CORS policy.
 
+When using the public GitHub Pages URL, Home Assistant must be reachable over HTTPS. Browsers block an HTTPS page from calling an HTTP local address. For local HTTP Home Assistant, run WinX locally with `py -m http.server 8080`, configure Home Assistant CORS for that origin, or place Home Assistant behind an HTTPS reverse proxy.
+
 ## Package a Rainmeter skin
 
 Use **Package helper** in the editor to download a ZIP containing the generated skin folder, `Variables.inc`, `Measures.inc`, `Actions.inc`, and a setup README. This is intentionally a ZIP bundle rather than a renamed `.rmskin`: Rainmeter validates `.rmskin` metadata and requires packages to be created with its official Skin Packager.
